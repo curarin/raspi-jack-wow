@@ -114,4 +114,14 @@ cd sql_databases
 sqlite3 jack_wow.db
 ```
 - Schritt 6: Nun gibst du folgende SQL-Query ein und passt dabei die ID auf die [Tabelle mit den Charakter-Daten](https://github.com/curarin/raspi-jack-wow#character-names) an. Damit aktualisierst du beispielsweise für den Monk den Eintrag.
+
+Ein paar Beispiele:
+- Dein Monk ist in der Tabelle in Zeile 1 gespeichert. Er trägt also die ID "1". Nun wechselst du den Server, der Name bleibt jedoch ident. Daher gibst du nun folgendes ein:
+```
+UPDATE char_names SET REALM = "name-des-neuen-servers" WHERE ID = 1;
+```
+- Wenn sich nun der Name des Monks ebenfalls ändern sollte, führst du die selbe SQL-Query nochmals aus - jedoch mit angepassten Daten. Dieses Mal änderst du den Namen des Monks:
+```
+UPDATE char_names SET NAME = "neuer-name-des-monks" WHERE ID = 1;
+```
  
