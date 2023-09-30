@@ -2,7 +2,7 @@
 
 ## Beschreibung
 
-Hierbei handelt es sich um ein Raspberry Pi Projekt für Georg. Aggregiert WoW-Performance-Daten über APIs (Raider.io, Warcraftlogs.com) und visualisiert sie auf einem E-Paper-Display. Software läuft auf einem Raspberry Pi Zero W. Für die Programmierung wurde Python verwendet. 
+Hierbei handelt es sich um ein Raspberry Pi Projekt. Aggregiert WoW-Performance-Daten über APIs (Raider.io, Warcraftlogs.com) und visualisiert sie auf einem E-Paper-Display. Software läuft auf einem Raspberry Pi Zero W. Für die Programmierung wurde Python verwendet. 
 
 ## Resultat
 
@@ -25,8 +25,12 @@ Folgende generische Daten werden dabei von **Warcraftlogs.com** für jeden hinte
 - Performance Percentile Median pro Charakter für das aktuelle Raid-Tier
 
 Folgende Encounter-spezifische Daten werden von **Warcraftlogs.com** für jeden hinterlegten Charakter geholt:
-- Encounter-Name
-- Gesamt-Kill-Count 
+- Name per Encounter
+- Gesamt-Kill-Count per Encounter
+- Performance Maximum Percentile per Encounter
+- World Rank per Encounter (Allstars-Ranking)
+- Region Rank per Encounter (Allstars-Ranking)
+- Realm Rank per Encounter (Allstars-Ranking)
 
 Das Skript wird mittels Cronjob 1x täglich ausgeführt:
 - 0 4 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
