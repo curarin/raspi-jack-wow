@@ -21,12 +21,11 @@ Daten werden aus zwei verschiedenen Quellen mittels API geholt:
 - Raider.io
 
 ##### Warcraftlogs Daten
-
-Folgende generische Daten werden dabei von **Warcraftlogs.com** für jeden hinterlegten Charakter geholt:
+**Generische Daten:**
 - Performance Percentile Average pro Charakter für das aktuelle Raid-Tier
 - Performance Percentile Median pro Charakter für das aktuelle Raid-Tier
 
-Folgende Encounter-spezifische Daten werden von **Warcraftlogs.com** für jeden hinterlegten Charakter geholt:
+**Encounter-spezifische Daten:**
 - Name per Encounter
 - Gesamt-Kill-Count per Encounter
 - Performance Maximum Percentile per Encounter
@@ -36,10 +35,20 @@ Folgende Encounter-spezifische Daten werden von **Warcraftlogs.com** für jeden 
 - Fastest Kill Time per Encounter
 
 ##### Raider.io Daten
+**Generische Daten:**
+- Name
+- Klasse
+- Guilde
+- Realm
+- Fraktion
+- ItemLevel
+- RaiderIO-Punkte (RIO)
+- M+ Rankings Gesamt (World, Region, Realm)
+- Raid Progress Summary (z.B. 9/9 M)
+- Dungeon-Performance-Daten: Höchstes Mythic-Plus-Level, Datum des höchsten Abschlusses, Clear Time, Upgrade-Level (z.B. +1, +2 oder +3) sowie URL zum besten Run
 
-
-
-Das Skript wird mittels Cronjob 1x täglich um 04:00 Uhr (am) ausgeführt:
+##### Automatisierung
+Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
 - 0 4 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
 
  ### SQLite3 DB Struktur
