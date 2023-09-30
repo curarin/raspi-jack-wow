@@ -16,6 +16,18 @@ Die Software besteht aus drei Python-Scripts. Daten werden temporär in einer lo
 #### georg_wow_etl.py
 Holt durch die User:innen hinterlegte Charakter-/ und Server-Informationen aus der Datenbank, übergibt sie an die jeweiligen Schnittstellen und generiert tagesaktuelle Daten.
 
+Daten werden aus zwei verschiedenen Quellen mittels API geholt:
+- Warcraftlogs.com
+- Raider.io
+
+Folgende generische Daten werden dabei von **Warcraftlogs.com** für jeden hinterlegten Charakter geholt:
+- Performance Percentile Average pro Charakter für das aktuelle Raid-Tier
+- Performance Percentile Median pro Charakter für das aktuelle Raid-Tier
+
+Folgende Encounter-spezifische Daten werden von **Warcraftlogs.com** für jeden hinterlegten Charakter geholt:
+- Encounter-Name
+- Gesamt-Kill-Count 
+
 Das Skript wird mittels Cronjob 1x täglich ausgeführt:
 - 0 4 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
 
