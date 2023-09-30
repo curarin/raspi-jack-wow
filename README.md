@@ -63,6 +63,11 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
  #### Internet / Konnektivität
 
  #### Stromversorgung
+ E-Paper-Displays benötigen Strom ausschließlich für das Wechseln von Informationen - nicht für die reine Anzeige. Dadurch bleiben Informationen auf dem Display ersichtlich, selbst wenn die "Hall of Fame"-Konstruktion aktuell nicht mit Strom versorgt ist.
+
+ Durch die Neuversorgnung mit Strom (beispielsweise nach einem Transport) wird der im Technik-Raum befindliche Raspberry Pi neugestartet. Bei Neustart wird automatisiert das Script **wow_epaper.py** gestartet, welches für die Anzeige aller Informationen auf dem E-Paper-Display sowie das Steuern über Buttons verantwortlich ist.
+
+ Dieser Vorgang (Hochfahren + Script starten) dauert rund 2 Minuten.
 
  #### Charakter Transfer
  Wenn Charakter transferiert werden muss zwingend die Datenbank mit den Charakter-Namen angepasst werden. Aus dieser Tabelle erhält das ETL-Script die notwendigen Charakter-spezifischen Informationen, um anschließend auf Warcraftlogs sowie Raider.io die richtigen Daten zu finden.
