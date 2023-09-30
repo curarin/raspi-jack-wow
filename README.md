@@ -20,6 +20,8 @@ Daten werden aus zwei verschiedenen Quellen mittels API geholt:
 - Warcraftlogs.com
 - Raider.io
 
+##### Warcraftlogs Daten
+
 Folgende generische Daten werden dabei von **Warcraftlogs.com** für jeden hinterlegten Charakter geholt:
 - Performance Percentile Average pro Charakter für das aktuelle Raid-Tier
 - Performance Percentile Median pro Charakter für das aktuelle Raid-Tier
@@ -31,6 +33,11 @@ Folgende Encounter-spezifische Daten werden von **Warcraftlogs.com** für jeden 
 - World Rank per Encounter (Allstars-Ranking)
 - Region Rank per Encounter (Allstars-Ranking)
 - Realm Rank per Encounter (Allstars-Ranking)
+- Fastest Kill Time per Encounter
+
+##### Raider.io Daten
+
+
 
 Das Skript wird mittels Cronjob 1x täglich ausgeführt:
 - 0 4 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
