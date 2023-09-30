@@ -61,7 +61,7 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
  - Table 1
  - Table 2
 
- #### Table 1
+ #### Character Names
  | ID  | NAME  | REALM  |
 | ------------- |:-------------:| -----:|
 | 1 | jackbrew | silvermoon |
