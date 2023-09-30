@@ -39,7 +39,11 @@ Folgende Encounter-spezifische Daten werden von **Warcraftlogs.com** für jeden 
 
 
 
-Das Skript wird mittels Cronjob 1x täglich ausgeführt:
+Das Skript wird mittels Cronjob 1x täglich um 04:00 Uhr (am) ausgeführt:
 - 0 4 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
 
  ### SQLite3 DB Struktur
+
+
+ ### Hinweise für Charakter-Transfer 
+ Wenn Charakter transferiert werden muss zwingend die Datenbank mit den Charakter-Namen angepasst werden. Aus dieser Tabelle erhält das ETL-Script die notwendigen Charakter-spezifischen Informationen, um anschließend auf Warcraftlogs sowie Raider.io die richtigen Daten zu finden.
