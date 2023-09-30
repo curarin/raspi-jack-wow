@@ -1,2 +1,11 @@
 # WoW Performance Dashboard | RaspberryPI Project
- Raspberry Pi Projekt für Georg - aggregiert WoW-Performance-Daten über APIs und visualisiert sie auf einem E-Paper-Display mit einem Raspberry Pi Zero W
+##Beschreibung
+Raspberry Pi Projekt für Georg. Aggregiert WoW-Performance-Daten über APIs (Raider.io, Warcraftlogs.com) und visualisiert sie auf einem E-Paper-Display. Software läuft auf einem Raspberry Pi Zero W. Für die Programmierung wurde Python verwendet. 
+
+## Resultat
+
+## Funktionsweise Hardware
+
+## Funktionsweise Software
+- test
+ 
