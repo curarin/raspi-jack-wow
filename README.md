@@ -62,11 +62,15 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
  - Table 2
 
  #### Table 1
- | ID  | Name           | Realm  |
+ | ID  | NAME  | REALM  |
 | ------------- |:-------------:| -----:|
-| 0 | jackbrew | sylvanas |
-| 1 | jackazzem      |   sylvanas |
-| 2 | jackbear      |    sylvanas |
+| 1 | jackbrew | silvermoon |
+| 2 | jackbear | silvermoon |
+| 3 | jackazzem | silvermoon |
+| 4 | jackpaladin | silvermoon |
+| 5 | jackblud | silvermoon |
+| 6 | jackdark | silvermoon |
+
 
  #### Table 2
 
@@ -105,4 +109,9 @@ ssh paulherzog@raspberrypi.local
 ```
 cd sql_databases
 ```
+- Schritt 5: Öffne die Datenbank, in denen deine Daten gespeichert sind. Dazu gibst du nun folgenden Begriff ein:
+```
+sqlite3 jack_wow.db
+```
+- Schritt 6: Nun gibst du folgende SQL-Query ein und passt dabei die ID auf die Tabelle an. Damit aktualisierst du beispielsweise für den Monk den Eintrag.
  
