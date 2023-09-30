@@ -113,5 +113,5 @@ cd sql_databases
 ```
 sqlite3 jack_wow.db
 ```
-- Schritt 6: Nun gibst du folgende SQL-Query ein und passt dabei die ID auf die Tabelle an. Damit aktualisierst du beispielsweise für den Monk den Eintrag.
+- Schritt 6: Nun gibst du folgende SQL-Query ein und passt dabei die ID auf die [Tabelle mit den Charakter-Daten](https://github.com/curarin/raspi-jack-wow#character-names) an. Damit aktualisierst du beispielsweise für den Monk den Eintrag.
  
