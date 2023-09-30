@@ -125,7 +125,6 @@ UPDATE char_names SET REALM = "name-des-neuen-servers" WHERE ID = 1;
 UPDATE char_names SET NAME = "neuer-name-des-monks" WHERE ID = 1;
 ```
 - Dies wird nun für [alle Charaktere](https://github.com/curarin/raspi-jack-wow#character-names) durchgeführt.
-
 - Anschließend kannst du mit nachfolgender SQL-Query überprüfen, ob die Daten nun korrekt angepasst wurden.
 ```
 SELECT * FROM char_names;
