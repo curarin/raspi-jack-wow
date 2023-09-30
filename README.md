@@ -18,7 +18,7 @@ Es werden in Summe drei Skripte verwendet:
 - **wow_epaper.py** für das Visualisieren aller Informationen auf dem E-Paper-Display sowie das Ansteuern über Buttons.
 
 #### georg_wow_etl.py
-Holt durch die User:innen hinterlegte Charakter-/ und Server-Informationen aus der Datenbank, übergibt sie an die jeweiligen Schnittstellen und generiert tagesaktuelle Daten.
+Holt manuell hinterlegte Charakter-/ und Server-Informationen aus der Datenbank, übergibt sie an die jeweiligen Schnittstellen und generiert tagesaktuelle Daten.
 
 Daten werden aus zwei verschiedenen Quellen mittels API geholt:
 - Warcraftlogs.com
