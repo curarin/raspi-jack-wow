@@ -61,6 +61,9 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
  ### Hinweise für die Nutzung
 
  #### Internet / Konnektivität
+ Die "Hall of Fame"-Konstruktion benötigt für das Ausführen der **georg_wow_etl.py**-Datei Internet-Zugang. Diese wird jeden Tag um 04:00 uhr Früh gestartet und lädt aktuelle Daten aus den Warcraftlogs- und Raider.IO-Datenbanken.
+
+ Da diese Daten dann anschließend in der internen SQLite3-Datenbank zwischengespeichert werden, wird für das bloße Bedienen sowie Daten-Anzeigen zwischen den Charakteren keine Internet-Verbindung benötigt.
 
  #### Stromversorgung
  E-Paper-Displays benötigen Strom ausschließlich für das Wechseln von Informationen - nicht für die reine Anzeige. Dadurch bleiben Informationen auf dem Display ersichtlich, selbst wenn die "Hall of Fame"-Konstruktion aktuell nicht mit Strom versorgt ist.
