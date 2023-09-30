@@ -90,4 +90,10 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
  #### Charakter Transfer
  Wenn Charakter transferiert werden muss zwingend die Datenbank mit den Charakter-Namen angepasst werden. Aus dieser Tabelle erhält das ETL-Script die notwendigen Charakter-spezifischen Informationen, um anschließend auf Warcraftlogs sowie Raider.io die richtigen Daten zu finden.
 
+ So passt du deine Charakter-Daten an:
+ 
+ ```
+ssh paulherzog@raspberrypi.local
+```
+
  
