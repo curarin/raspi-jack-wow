@@ -77,7 +77,7 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
 
  Tabelle sieht circa wie folgt aus:
  | wcl_performance_average  | wcl_performance_median  | encounter_1_name  | encounter_1_rank_percent | encounter_1_median_percent | ... |
-| ------------- |:-------------:| |:-------------:| |:-------------:||:-------------:|-----:|
+| ------------- |-------------| |-------------| |-------------||-------------|-----|
 | 1 | 91.15 | 82.56 | Kazzara, the Hellforged | 98.73 | 88.51 | ... |
 | 2 | 89.80 | 83.91 | Kazzara, the Hellforged | 94.70 | 92.22 | ... |
 
