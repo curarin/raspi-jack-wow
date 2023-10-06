@@ -58,8 +58,8 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
  ### SQLite3 DB Struktur
  Die SQLite3-Datenbank besteht aus zwei Tables.
 
- - Table 1
- - Table 2
+ - Character Names
+ - API Data
 
  #### Character Names
  | ID  | NAME  | REALM  |
@@ -73,6 +73,13 @@ Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
 
 
  #### Table 2
+ API Data besteht aus mehreren hundert Kolumnen. Hier werden die Daten aus der API gespeichert, um sie dann im nächsten Schritt verarbeiten zu können.
+
+ Tabelle sieht circa wie folgt aus:
+ | wcl_performance_average  | wcl_performance_median  | encounter_1_name  | encounter_1_rank_percent | encounter_1_median_percent | ... |
+| ------------- |:-------------:| |:-------------:| |:-------------:||:-------------:|-----:|
+| 1 | 91.15 | 82.56 | Kazzara, the Hellforged | 98.73 | 88.51 | ... |
+| 2 | 89.80 | 83.91 | Kazzara, the Hellforged | 94.70 | 92.22 | ... |
 
 
  ### Hinweise für die Nutzung
