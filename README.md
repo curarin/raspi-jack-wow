@@ -5,8 +5,11 @@
 Hierbei handelt es sich um ein Raspberry Pi Projekt. Aggregiert WoW-Performance-Daten über APIs (Raider.io, Warcraftlogs.com) und visualisiert sie auf einem E-Paper-Display. Software läuft auf einem Raspberry Pi Zero W. Für die Programmierung wurde Python verwendet. 
 
 ## Resultat
+![40020D65-F8FE-4E98-9E93-ACC645205BDC_1_105_c](https://github.com/curarin/raspi-jack-wow/assets/145868208/3e875faa-d2f3-4a7a-b0e8-1665ae2ebe86)
+![A41FA571-B935-4F27-8597-5C739959105C_1_105_c](https://github.com/curarin/raspi-jack-wow/assets/145868208/ce45c27e-9114-4de3-93bc-fb27cddda98d)
+![7B046FB9-1537-4553-B797-380F69938F96_1_105_c](https://github.com/curarin/raspi-jack-wow/assets/145868208/33ea7fc2-7d69-45a0-a315-80b66e2fc83e)
 
-## Funktionsweise Hardware
+
 
 ## Funktionsweise Software
 Die Software besteht aus drei Python-Scripts. Daten werden temporär in einer lokalen SQLite3 Datenbank auf einer SD-Karte gespeichert.
