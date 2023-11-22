@@ -27,6 +27,11 @@ def img_convert(img_file,X_new,Y_new):
         return img
 
 
+def custom_convert(value):
+        try:
+           return float(value)
+        except ValueError:
+           return 0
 
 ########
 
@@ -39,7 +44,8 @@ for char in df_with_api_data.itertuples(index=False):
         encounter_count = len(encounter_numbers.columns)
         rank_percent_data = row_data_currently_selected.filter(like='_rankpercent')
         region_rank_data = row_data_currently_selected.filter(like='_regionrank')
-        rank_percent_data = rank_percent_data.replace('None', np.nan).astype(float)
+ #       rank_percent_data = rank_percent_data.replace('None', 0).astype(float)
+        rank_percent_data = rank_percent_data.applymap(custom_convert).astype(float)
         encounter_names = [df_with_api_data[f'encounter_{i}_name'].iloc[0] for i in range(1, encounter_count + 1)]
 
         region_ranks = [region_rank_data[f'encounter_{i}_regionrank'] for i in range(1, encounter_count + 1)]
@@ -84,7 +90,28 @@ for char in df_with_api_data.itertuples(index=False):
                 ax2.annotate(f'{height2:.2f}', (bar2.get_x() + bar2.get_width() / 2, height2),
                         ha='center', va='bottom', fontsize=10)
                 region_rank = region_ranks[encounter_names.index(encounter_name)]
-                if (region_rank <= 3).any():
+                try:
+                        region_rank = int(region_rank)
+                except ValueError:
+                        region_rank = 0
+                if (region_rank == 1):
+                        bar_middle_x = bar2.get_x() + bar2.get_width() / 2
+                        star_y = height2 * 0.7
+                        ax2.annotate("""
+ .__.
+ (|  |)
+ (  )
+ _)(_ 
+ R
+ 1
+
+ G
+ G
+ W
+ P
+
+""",(bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
+                if (region_rank <= 3) & (region_rank > 1):
                         bar_middle_x = bar2.get_x() + bar2.get_width() / 2
                         star_y = height2 * 0.5
                         ax2.annotate("""
@@ -95,14 +122,10 @@ for char in df_with_api_data.itertuples(index=False):
 TOP
  3
 
- G
- G
- W
- P
 
 
 """, (bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
-                if (region_rank > 3).any() & (region_rank <= 10).any():
+                if (region_rank > 3) & (region_rank <= 10):
                         bar_middle_x = bar2.get_x() + bar2.get_width() / 2
                         star_y = height2 * 0.5  # Adjust the y-coordinate to 50% of the bar's height
                         ax2.annotate("""
@@ -114,7 +137,7 @@ TOP
 10
 
 """, (bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
-                elif (region_rank < 50).any() & (region_rank > 10).any():
+                elif (region_rank < 50) & (region_rank > 10):
                         # Calculate the middle position of the bar and adjust the y-coordinate for the star
                         bar_middle_x = bar2.get_x() + bar2.get_width() / 2
                         star_y = height2 * 0.2  # Adjust the y-coordinate to 50% of the bar's height

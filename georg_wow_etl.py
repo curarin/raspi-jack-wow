@@ -18,12 +18,22 @@ df_char_names = pd.DataFrame(columns=["ID", "CharName", "Realm"])
 for row in output:
     df_char_names = df_char_names.append({"ID": row[0], "CharName": row[1], "Realm": row[2]}, ignore_index=True)
 print("...successfully retrieved character name data.")
+#now check what the current raid is from sqlite3 table
+raid_release_dates_statement = """SELECT name, first_seen FROM raid_names; """
+cursor_obj.execute(raid_release_dates_statement)
+raid_release_dates_db_data = cursor_obj.fetchall()
+raid_release_dates_df = pd.DataFrame(columns=["name", "first_seen"])
+for row in raid_release_dates_db_data:
+    raid_release_dates_df = raid_release_dates_df.append({"name":row  [0], "first_seen": row[1]}, ignore_index=True)
+raid_release_dates_df["first_seen"] = pd.to_datetime(raid_release_dates_df["first_seen"], format="%d-%m-%Y")
+list_with_db_raid_names = list(raid_release_dates_df["name"]) #die liste wird spaeter gebraucht um zu checken ob was neues dazugekommen ist
+print("Successfully fetched Raid Names & Release Dates from DB")
 connection_obj.close()
 print("Connection to jack_wow.db closed.")
 
 # Warcraftlogs Credentials & AUTH via POST
-client_id_warcraftlogs = "<here comes client id>"
-client_secret_warcraftlogs = "<here comes client secret>"
+client_id_warcraftlogs = "9a265d81-2881-4d13-876d-556ead93a858"
+client_secret_warcraftlogs = "JX2pF4kThvnBaDN20W9ZufpoaRVmFWmUkLG61vjF"
 token_url_warcraftlogs = "https://www.warcraftlogs.com/oauth/token"
 data_warcraftlogs = {
 	"grant_type": "client_credentials"
@@ -132,10 +142,14 @@ for char in df_char_names.itertuples(index=False):
 
             else:
                 # Handle the case where allStars_data is not a dictionary or is None
-                encounter_worldrank = 'N/A'
-                encounter_regionrank = 'N/A'
-                encounter_serverrank = 'N/A'
-                encounter_rankpercent = 'N/A'
+                encounter_worldrank = 0.0
+                character_data[f'encounter_{i}_worldrank'] = encounter_worldrank
+                encounter_regionrank = 0.0
+                character_data[f'encounter_{i}_regionrank'] = encounter_regionrank
+                encounter_serverrank = 0.0
+                character_data[f'encounter_{i}_serverrank'] = encounter_serverrank
+                encounter_rankpercent = 0.0
+                character_data[f'encounter_{i}_rankpercent'] = encounter_rankpercent
 
             encounter_fastestkill = encounter_data.get("fastestKill", 'N/A')            
             if encounter_fastestkill:
@@ -145,7 +159,7 @@ for char in df_char_names.itertuples(index=False):
                 except (ValueError, TypeError):
                     encounter_fastestkill = "N/A"
             character_data[f'encounter_{i}_fastestkilltime'] = encounter_fastestkill
-            #print(f"{encounter_name} Performance: {encounter_rank_percent}. Total Kills: {encounter_totalkills} | World Rank: {encounter_worldrank} | Region Rank: {encounter_regionrank} | Server Rank: {encounter_serverrank} | Fastest Kill: {encounter_fastestkill}")
+            #print(f"{encounter_name} Performance: {encounter_rankpercent}. Total Kills: {encounter_totalkills} | World Rank: {encounter_worldrank} | Region Rank: {encounter_regionrank} | Server Rank: {encounter_serverrank} | Fastest Kill: {encounter_fastestkill}")
 
 # Make the API request for raider.io
         response_raider_io = requests.get(api_url_raider_io)
@@ -179,11 +193,32 @@ for char in df_char_names.itertuples(index=False):
         character_data["mplus_rankings_class_region"] = character_data_raider_io["mythic_plus_ranks"]["class"]["region"]
         character_data["mplus_rankings_class_realm"] = character_data_raider_io["mythic_plus_ranks"]["class"]["realm"]
         #m_plus_dungeondata = character_data_raider_io["mythic_plus_best_runs"]
-        raid_current_slug, raid_current_performance = next(iter(character_data_raider_io["raid_progression"].items()))
-        character_data["raid_summary"] = raid_current_performance["summary"]
-        character_data["raid_normalkills"] = raid_current_performance["normal_bosses_killed"]
-        character_data["raid_heroickills"] = raid_current_performance["heroic_bosses_killed"]
-        character_data["raid_mythickills"] = raid_current_performance["mythic_bosses_killed"]
+        #hier werden die raider IO daten aufbereitet
+        list_with_raid_names = list(character_data_raider_io["raid_progression"].keys())
+        summaries = [character_data_raider_io["raid_progression"][key]['summary'] for key in list_with_raid_names]
+        df_with_raid_names = pd.DataFrame({'name': list_with_raid_names, 'summary': summaries})
+
+        # hier werden die in der datenbank hinterlegten daten aufbereitet - es wird der aktuellste eintrag hergenommen
+        # if schleife um zu schauen, ob bei raider io ein neuer eintrag da ist, der in der DB noch nicht ist
+        # falls ident, wird der aktuellste aus der DB genommen und darauf wird gefiltert
+        # falls nicht ident, wird geschaut was bei Raider IO neu ist und das wird als name herangezogen
+        # ausserdem wird das neue dann mit dem heutigen datum in die DB gepushed
+        raider_io_raidnames = set(list_with_raid_names)
+        db_raidnames = set(list_with_db_raid_names)
+        if raider_io_raidnames == db_raidnames:
+            latest_raid_tier = raid_release_dates_df.loc[raid_release_dates_df["first_seen"].idxmax()]
+            latest_raid_tier_name = latest_raid_tier["name"]
+        else:
+            latest_raid_tier_name = list(raider_io_raidnames.symmetric_difference(db_raidnames))[0] #hier wird geschaut welche entries bei Raider.io vorhanden sind, in der DB aber noch nicht
+            connection_obj = sqlite3.connect("/home/paulherzog/sql_databases/jack_wow.db")
+            cursor_obj = connection_obj.cursor()
+            print("Connected to jack_wow.db for updating raid tier name.")
+            new_raid_data = (latest_raid_tier_name, datetime.now().strftime("%d-%m-%Y"))
+            cursor_obj.execute("INSERT INTO raid_names (name, first_seen) VALUES (?, ?)", new_raid_data)
+            connection_obj.commit()
+            connection_obj.close()
+
+        character_data["raid_summary"] = df_with_raid_names[df_with_raid_names['name'] == latest_raid_tier_name]['summary'].values[0]
         # looping through dungeon data and initialize variables for sqlite database
 
         for i, dungeon_data in enumerate(character_data_raider_io["mythic_plus_best_runs"], start=1):
@@ -227,10 +262,19 @@ for char in df_char_names.itertuples(index=False):
 df_character_data = pd.DataFrame(character_data_list)
 # Assuming you have a Pandas DataFrame named 'df'
 # Create a connection to the SQLite database
-connection_obj = sqlite3.connect('/home/paulherzog/sql_databases/jack_wow.db')  # Replace 'jack_wow.db' with your database file name or path
+connection_obj = sqlite3.connect('/home/paulherzog/sql_databases/jack_wow.db') 
 print("Connection to jack_wow.db.")
 # Use the to_sql method to write the DataFrame to the database
 df_character_data.to_sql('char_performance_data', connection_obj, if_exists='replace', index=False)  # 'replace' will replace the table if it already exists
 print("Character Data pushed to table 'char_performance_data'")
+#now check what the current raid is
+#raid_release_dates_statement = """SELECT name, first_seen FROM raid_names; """
+#cursor_obj.execute(raid_release_dates_statement)
+#raid_release_dates_db_data = cursor_obj.fetchall()
+#raid_release_dates_df = pd.DataFrame(columns["name", "first_seen"]
+#for row in raid_release_dates_db_data:
+#      raid_release_dates_df = raid_release_dates_df.append({"name":row	[0], "first_seen": row[1]}, ignore_index=True)
+#print("Successfully fetched Raid Names & Release Dates from DB")
+#print(raid_release_dates_df)
 # Close the database connection
 connection_obj.close()

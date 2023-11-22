@@ -7,7 +7,7 @@ import epaper
 from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 import sqlite3
 import os
-from gpiozero import Button
+import gpiozero
 from signal import pause
 import requests
 from io import BytesIO
@@ -20,8 +20,8 @@ print("Clearing display...")    # prints to console, not the display, for debugg
 epd.Clear()      # clear the display
 
 ### DEFINING BUTTONS
-key1 = Button(5)
-key2 = Button(6)
+key1 = gpiozero.Button(3)
+key2 = gpiozero.Button(4)
 
 ##### FONTS #######
 font_content = ImageFont.truetype("/home/paulherzog/.fonts/folkard_.ttf", 25)  #folkard
