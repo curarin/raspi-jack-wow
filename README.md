@@ -55,8 +55,11 @@ Daten werden aus zwei verschiedenen Quellen mittels API geholt:
 - Dungeon-Performance-Daten: Höchstes Mythic-Plus-Level, Datum des höchsten Abschlusses, Clear Time, Upgrade-Level (z.B. +1, +2 oder +3) sowie URL zum besten Run
 
 ##### Automatisierung
-Das Skript wird mittels Cronjob täglich um 04:00 Uhr (A.M.) ausgeführt:
-- 0 4 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
+Aktuell dauert es bis 12:00 Uhr (UTC), bis Warcraftlogs aktuelle Parses fixiert ("locked in"). Daher wird das Script täglich ab 12:05 Uhr UTC (= 13:05 Uhr nach AT-Zeit) ausgeführt.
+- 5 13 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
+- 6 13 * * * /usr/bin/python3 /home/paulherzog/python/wow_plotting.py
+- 10 13 * * * pkill -f "python3 /home/paulherzog/python/wow_epaper.py"
+- 11 13 * * * /usr/bin/python3 /home/paulherzog/python/wow_epaper.py
 
  ### SQLite3 DB Struktur
  Die SQLite3-Datenbank besteht aus zwei Tables.
