@@ -32,8 +32,8 @@ connection_obj.close()
 print("Connection to jack_wow.db closed.")
 
 # Warcraftlogs Credentials & AUTH via POST
-client_id_warcraftlogs = "9a265d81-2881-4d13-876d-556ead93a858"
-client_secret_warcraftlogs = "JX2pF4kThvnBaDN20W9ZufpoaRVmFWmUkLG61vjF"
+client_id_warcraftlogs = "#######"
+client_secret_warcraftlogs = "#######"
 token_url_warcraftlogs = "https://www.warcraftlogs.com/oauth/token"
 data_warcraftlogs = {
 	"grant_type": "client_credentials"
