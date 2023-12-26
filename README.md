@@ -109,7 +109,7 @@ Durch diese Logik wird gewährleistet, dass im Performance Dashboard ab Tag 1 di
  ### Hinweise für die Nutzung
 
  #### Internet / Konnektivität
- Die "Hall of Fame"-Konstruktion benötigt für das Ausführen der **georg_wow_etl.py**-Datei Internet-Zugang. Diese wird jeden Tag um 04:00 uhr Früh gestartet und lädt aktuelle Daten aus den Warcraftlogs- und Raider.IO-Datenbanken.
+ Die "Hall of Fame"-Konstruktion benötigt für das Ausführen der **georg_wow_etl.py**-Datei Internet-Zugang. Diese wird jeden Tag um 05:40 uhr Früh gestartet und lädt aktuelle Daten aus den Warcraftlogs- und Raider.IO-Datenbanken.
 
  Da diese Daten dann anschließend in der internen SQLite3-Datenbank zwischengespeichert werden, wird für das bloße Bedienen sowie Daten-Anzeigen zwischen den Charakteren keine Internet-Verbindung benötigt.
 
