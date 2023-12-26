@@ -4,6 +4,7 @@ import pandas as pd
 import sqlite3
 from PIL import Image, ImageEnhance
 import os
+from datetime import date
 
 ### GET DB DATA ###
 connection_obj = sqlite3.connect("/home/paulherzog/sql_databases/jack_wow.db")
@@ -43,12 +44,12 @@ for char in df_with_api_data.itertuples(index=False):
         encounter_numbers = df_with_api_data.filter(like='_totalkills')
         encounter_count = len(encounter_numbers.columns)
         rank_percent_data = row_data_currently_selected.filter(like='_rankpercent')
-        region_rank_data = row_data_currently_selected.filter(like='_regionrank')
+        rank_data = row_data_currently_selected.filter(like='_worldrank') #here you can decide between _worldrank / _regionrank / _serverrank
  #       rank_percent_data = rank_percent_data.replace('None', 0).astype(float)
         rank_percent_data = rank_percent_data.applymap(custom_convert).astype(float)
         encounter_names = [df_with_api_data[f'encounter_{i}_name'].iloc[0] for i in range(1, encounter_count + 1)]
 
-        region_ranks = [region_rank_data[f'encounter_{i}_regionrank'] for i in range(1, encounter_count + 1)]
+        top_ranks = [rank_data[f'encounter_{i}_worldrank'] for i in range(1, encounter_count + 1)]
 
         x = np.arange(encounter_count)
 
@@ -89,12 +90,12 @@ for char in df_with_api_data.itertuples(index=False):
                          ha='center', va='bottom', fontsize=10)
                 ax2.annotate(f'{height2:.2f}', (bar2.get_x() + bar2.get_width() / 2, height2),
                         ha='center', va='bottom', fontsize=10)
-                region_rank = region_ranks[encounter_names.index(encounter_name)]
+                top_rank = top_ranks[encounter_names.index(encounter_name)]
                 try:
-                        region_rank = int(region_rank)
+                        top_rank = int(top_rank)
                 except ValueError:
-                        region_rank = 0
-                if (region_rank == 1):
+                        top_rank = 0
+                if (top_rank == 1):
                         bar_middle_x = bar2.get_x() + bar2.get_width() / 2
                         star_y = height2 * 0.7
                         ax2.annotate("""
@@ -109,50 +110,24 @@ for char in df_with_api_data.itertuples(index=False):
  G
  W
  P
+ !
+
 
 """,(bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
-                if (region_rank <= 3) & (region_rank > 1):
+                if (top_rank > 1) & (top_rank <= 10):
                         bar_middle_x = bar2.get_x() + bar2.get_width() / 2
                         star_y = height2 * 0.5
-                        ax2.annotate("""
+                        ax2.annotate(f"""
  .__.
  (|  |)
  (  )
  _)(_ 
-TOP
- 3
+ R
+#{top_rank}
 
 
 
 """, (bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
-                if (region_rank > 3) & (region_rank <= 10):
-                        bar_middle_x = bar2.get_x() + bar2.get_width() / 2
-                        star_y = height2 * 0.5  # Adjust the y-coordinate to 50% of the bar's height
-                        ax2.annotate("""
- .__.
- (|  |)
- (  )
- _)(_ 
-TOP
-10
-
-""", (bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
-                elif (region_rank < 50) & (region_rank > 10):
-                        # Calculate the middle position of the bar and adjust the y-coordinate for the star
-                        bar_middle_x = bar2.get_x() + bar2.get_width() / 2
-                        star_y = height2 * 0.2  # Adjust the y-coordinate to 50% of the bar's height
-                        ax2.annotate("""
- .__.
- (|  |)
- (  )
- _)(_
-TOP
-50
-
-""", (bar_middle_x, star_y), ha='center', va='center', fontsize=10, color='white')
-
- #       ax1.legend(loc='upper left', bbox_to_anchor=(0.05, 1.0))
- #       ax2.legend(loc='upper left', bbox_to_anchor=(0.4, 1.0))
 
         plt.tight_layout()
         dpi = 240
@@ -160,7 +135,9 @@ TOP
         plt.savefig(temp_file, dpi=dpi, bbox_inches='tight', transparent=True)
         #bmp_image = img_convert(temp_file, 800, 400)
         bmp_image = Image.open(temp_file)
-        bmp_file = f'raid_overview_{char_name}.bmp'
+        bmp_file = f'/home/paulherzog/python/raid_overview_{char_name}.bmp'
         bmp_image.save(bmp_file, dpi=(dpi, dpi))
         os.remove(temp_file)
         print(f"Raid Data Plotting completed for {char_name}...")
+today = date.today()
+print(f"Plotting completed for all characters on {today}")

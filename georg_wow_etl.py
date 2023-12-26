@@ -3,7 +3,14 @@ import json
 import sqlite3
 import pandas as pd
 from datetime import datetime
+import epaper
 
+
+##### DRIVERS AND INITIALIZING DISPLAY########
+#epd = epaper.epaper("epd7in5_V2").EPD() # get the display
+#epd.init()           # initialize the display
+#print("Resetting display...")    # prints to console, not the display, for debugging
+#epd.reset()      # clear the display
 ######## CONNECT TO DB
 ### READ CHAR NAMES FROM table "char_names" in db "jack_wow"
 # Read data from the database
@@ -32,8 +39,8 @@ connection_obj.close()
 print("Connection to jack_wow.db closed.")
 
 # Warcraftlogs Credentials & AUTH via POST
-client_id_warcraftlogs = "#######"
-client_secret_warcraftlogs = "#######"
+client_id_warcraftlogs = "9a265d81-2881-4d13-876d-556ead93a858"
+client_secret_warcraftlogs = "JX2pF4kThvnBaDN20W9ZufpoaRVmFWmUkLG61vjF"
 token_url_warcraftlogs = "https://www.warcraftlogs.com/oauth/token"
 data_warcraftlogs = {
 	"grant_type": "client_credentials"

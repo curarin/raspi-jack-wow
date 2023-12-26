@@ -15,7 +15,7 @@ from io import BytesIO
 
 ##### DRIVERS AND INITIALIZING DISPLAY########
 epd = epaper.epaper("epd7in5_V2").EPD() # get the display
-epd.init()           # initialize the display
+epd.init()
 print("Clearing display...")    # prints to console, not the display, for debugging
 epd.Clear()      # clear the display
 
@@ -124,7 +124,7 @@ def data_current_row():
 	print(f"Data for Character '{char_name}' in Row:", current_row_selected)
 
 	#here we are pushing all relevent informations #
-	draw.text((60, 5), char_name, font = font_header, fill = 0)
+	draw.text((60, 5), char_name[:9], font = font_header, fill = 0)
 	draw.text((300, 10), char_realm, font = font_content, fill = 0)
 	draw.text((300, 40), char_guild, font = font_content, fill = 0)
 	draw.text((460, 10), f"iLevel: {char_ilevel}", font = font_content, fill = 0)
