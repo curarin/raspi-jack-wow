@@ -56,17 +56,19 @@ Daten werden aus zwei verschiedenen Quellen mittels API geholt:
 - Dungeon-Performance-Daten: Höchstes Mythic-Plus-Level, Datum des höchsten Abschlusses, Clear Time, Upgrade-Level (z.B. +1, +2 oder +3) sowie URL zum besten Run
 
 ##### Automatisierung
-Die Scripte werden aktuell 2x täglich ausgeführt - einmal ab 05:05 (bis 05:11) Uhr sowie um ab 15:05 (bis 15:11) Uhr.
-- 5 5,15 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py
-- 6 5,15 * * * /usr/bin/python3 /home/paulherzog/python/wow_plotting.py
-- 10 5,15 * * * pkill -f "python3 /home/paulherzog/python/wow_epaper.py"
-- 11 5,15 * * * /usr/bin/python3 /home/paulherzog/python/wow_epaper.py
+Die Scripte werden 1x täglich ausgeführt:
+- @reboot sleep 60 && /usr/bin/python3 /home/paulherzog/python/wow_epaper.py
+- 40 5 * * * /usr/bin/python3 /home/paulherzog/python/georg_wow_etl.py >> /home/paulherzog/python/cron_log 2>&1
+- 45 5 * * * /usr/bin/python3 /home/paulherzog/python/wow_plotting.py >> /home/paulherzog/python/cron_log 2>&1
+- 55 5 * * * pkill -f "python3 /home/paulherzog/python/wow_epaper.py" >> /home/paulherzog/python/cron_log 2>&1
+- 0 6 * * * /usr/bin/python3 /home/paulherzog/python/wow_epaper.py >> /home/paulherzog/python/cron_log 2>&1
 
  ### SQLite3 DB Struktur
- Die SQLite3-Datenbank besteht aus zwei Tables.
+ Die SQLite3-Datenbank besteht aus drei Tables.
 
  - Character Names
  - API Data
+ - Raid Release Data
 
  #### Character Names
  | ID  | NAME  | REALM  |
@@ -88,12 +90,26 @@ Die Scripte werden aktuell 2x täglich ausgeführt - einmal ab 05:05 (bis 05:11)
 | 91.15                   | 82.56                 | Kazzara, the Hellforged  | 98.73                   | 88.51                     | ... |
 | 89.80                   | 83.91                 | Kazzara, the Hellforged  | 94.70                   | 92.22                     | ... |
 
+ #### Table 3
+ Die letzte Table nennt sich "raid_names" und erfüllt einzig den Zweck, dass der aktuellste Raid aus den Performance Daten gezogen wird. Dafür wird bei jedem täglichen API Request geschaut, ob alle in der Response vorkommenden Raid Namen bereits vorhanden sind. Anschließend greift folgende Logik:
+ - Wenn alle Raid Namen in der Sqlite3-DB vorhanden sind, wird keinerlei Änderung vorgenommen. In der Datenaufbereitung wird dann der Raid Name (sowie die damit in Verbindung stehenden Performance Daten) herangezogen, dessen Release Datum am aktuellsten ist.
+ - Wenn ein Raid Name in der API Response noch **nicht** in der Sqlite3-DB vorhanden ist, dann wird dieser Raid Name mit dem aktuellen Datum in der Datenbank hinterlegt.
+
+Durch diese Logik wird gewährleistet, dass im Performance Dashboard ab Tag 1 die aktuellsten Raid-bezogenen Daten angezeigt werden. Die Tabelle sieht dabei wie folgt aus:
+
+| name | first_seen |
+| ----------------------- | --- |
+| aberrus-the-shadowed-crucible | 09-05-2023 |
+| amirdrassil-the-dreams-hope | 22-11-2023 |
+| vault-of-the-incarnates | 12-12-2022 |
+
+
 
 
  ### Hinweise für die Nutzung
 
  #### Internet / Konnektivität
- Die "Hall of Fame"-Konstruktion benötigt für das Ausführen der **georg_wow_etl.py**-Datei Internet-Zugang. Diese wird jeden Tag um 04:00 uhr Früh gestartet und lädt aktuelle Daten aus den Warcraftlogs- und Raider.IO-Datenbanken.
+ Die "Hall of Fame"-Konstruktion benötigt für das Ausführen der **georg_wow_etl.py**-Datei Internet-Zugang. Diese wird jeden Tag um 05:40 uhr Früh gestartet und lädt aktuelle Daten aus den Warcraftlogs- und Raider.IO-Datenbanken.
 
  Da diese Daten dann anschließend in der internen SQLite3-Datenbank zwischengespeichert werden, wird für das bloße Bedienen sowie Daten-Anzeigen zwischen den Charakteren keine Internet-Verbindung benötigt.
 
